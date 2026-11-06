@@ -1,0 +1,94 @@
+[
+  {
+    "slug": "google",
+    "name": "Google",
+    "category": "Productivity",
+    "difficulty": "Moderate",
+    "time": "1–3 hours*",
+    "description": "Configure a Google Cloud project, OAuth consent screen and OAuth client.",
+    "docs": "https://developers.google.com/identity/protocols/oauth2",
+    "approval": "Verification may be required for sensitive or restricted scopes and public distribution.",
+    "steps": [
+      {"title": "Create or select a Google Cloud project", "detail": "Use a project dedicated to the integration where practical.", "owner": "Human"},
+      {"title": "Configure OAuth consent screen", "detail": "Set app name, support email, audience and developer contact details.", "owner": "Human"},
+      {"title": "Add scopes and test users", "detail": "Request minimum scopes. During testing, add permitted test users when applicable.", "owner": "Human"},
+      {"title": "Create OAuth client credentials", "detail": "Choose the correct application type and register exact authorized redirect URIs.", "owner": "Human"},
+      {"title": "Test and assess verification", "detail": "Test authorization and check whether requested scopes require verification.", "owner": "Agent"}
+    ],
+    "requirements": ["Google Cloud project", "OAuth consent screen details", "Authorized redirect URI", "Scope justification and verification materials if applicable"],
+    "blockers": ["Sensitive/restricted scopes can trigger verification", "Unverified apps may show user warnings or have user limits", "Incorrect redirect URI causes authorization errors"],
+    "agent_can_do": ["Explain OAuth flow and scope choices", "Draft privacy-policy and verification checklist", "Check redirect URI consistency"],
+    "human_must_do": ["Sign in to Google Cloud Console", "Own the project and verify domains if needed", "Submit verification if required"],
+    "sources": [{"label": "Google OAuth 2.0 documentation", "url": "https://developers.google.com/identity/protocols/oauth2"}, {"label": "Google OAuth app verification", "url": "https://support.google.com/cloud/answer/9110914"}],
+    "verification": "Guide checked against official Google developer and support documentation. No console setup or verification submission was performed."
+  },
+  {
+    "slug": "slack",
+    "name": "Slack",
+    "category": "Communication",
+    "difficulty": "Moderate",
+    "time": "45–120 minutes*",
+    "description": "Create a Slack app, configure OAuth scopes and install it to a workspace.",
+    "docs": "https://api.slack.com/authentication/oauth-v2",
+    "approval": "Workspace installation and admin approval may depend on workspace policies.",
+    "steps": [
+      {"title": "Create a Slack app", "detail": "Create an app in the Slack API dashboard, using a manifest or from scratch.", "owner": "Human"},
+      {"title": "Configure redirect URLs", "detail": "Add the exact OAuth redirect URL used by your application.", "owner": "Human"},
+      {"title": "Select bot and user scopes", "detail": "Choose only the scopes needed for the integration and understand which token type they apply to.", "owner": "Agent"},
+      {"title": "Install to a development workspace", "detail": "Run the OAuth flow and review the permissions requested on the consent screen.", "owner": "Human"},
+      {"title": "Test token and API calls", "detail": "Verify the callback, token storage and one representative API call.", "owner": "Agent"}
+    ],
+    "requirements": ["Slack account", "Development workspace", "Redirect URL", "Required bot/user scopes"],
+    "blockers": ["Workspace admins may restrict app installation", "Scopes may require reinstallation after changes", "Redirect URL mismatch"],
+    "agent_can_do": ["Map product actions to likely Slack scopes", "Draft app manifest", "Validate redirect URL format"],
+    "human_must_do": ["Create and own the Slack app", "Approve installation in the workspace", "Complete any workspace admin review"],
+    "sources": [{"label": "Slack OAuth documentation", "url": "https://api.slack.com/authentication/oauth-v2"}, {"label": "Slack app manifests", "url": "https://api.slack.com/reference/manifests"}],
+    "verification": "Guide checked against official Slack API documentation. No workspace installation or admin approval was performed."
+  },
+  {
+    "slug": "github",
+    "name": "GitHub",
+    "category": "Developer tools",
+    "difficulty": "Easy–Moderate",
+    "time": "30–90 minutes*",
+    "description": "Register an OAuth App and configure callback URLs and requested scopes.",
+    "docs": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app",
+    "approval": "A basic OAuth App can be registered by an account owner; organization policies can affect access.",
+    "steps": [
+      {"title": "Open Developer settings", "detail": "Navigate to your account or organization developer settings and create an OAuth App.", "owner": "Human"},
+      {"title": "Enter application details", "detail": "Provide homepage URL, application description and authorization callback URL.", "owner": "Human"},
+      {"title": "Generate client secret", "detail": "Create the client secret and store it in a server-side secret manager.", "owner": "Human"},
+      {"title": "Choose minimum scopes", "detail": "Request only the permissions needed for your product's GitHub API actions.", "owner": "Agent"},
+      {"title": "Test authorization code flow", "detail": "Test callback handling, code exchange and token use with a development account.", "owner": "Agent"}
+    ],
+    "requirements": ["GitHub account with permission to create OAuth Apps", "Homepage URL", "Callback URL", "Scope list and secure secret storage"],
+    "blockers": ["Organization policy can restrict OAuth app access", "OAuth Apps have limitations compared with GitHub Apps", "Callback mismatch or insecure token handling"],
+    "agent_can_do": ["Compare OAuth App and GitHub App trade-offs", "Draft scope mapping", "Generate callback validation checklist"],
+    "human_must_do": ["Register the app while signed in", "Generate and securely store credentials", "Approve organization access if required"],
+    "sources": [{"label": "Creating an OAuth App", "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app"}, {"label": "Authorizing OAuth Apps", "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps"}],
+    "verification": "Guide checked against official GitHub documentation. No app registration or authorization test was performed."
+  },
+  {
+    "slug": "notion",
+    "name": "Notion",
+    "category": "Productivity",
+    "difficulty": "Moderate",
+    "time": "45–120 minutes*",
+    "description": "Create a public integration, configure OAuth redirect URI and request workspace access.",
+    "docs": "https://developers.notion.com/docs/authorization",
+    "approval": "Workspace owner/admin authorization is part of connecting an integration; distribution requirements can vary.",
+    "steps": [
+      {"title": "Create an integration", "detail": "Create an integration in the Notion developer portal and choose the appropriate distribution type.", "owner": "Human"},
+      {"title": "Configure OAuth settings", "detail": "Set the redirect URI and review the client credentials for the integration.", "owner": "Human"},
+      {"title": "Define capabilities", "detail": "Select the minimum content capabilities needed by the integration.", "owner": "Agent"},
+      {"title": "Run the authorization flow", "detail": "Ask a workspace owner to authorize the integration and select the pages it can access.", "owner": "Human"},
+      {"title": "Test access", "detail": "Use the resulting token to verify access only to pages shared with the integration.", "owner": "Agent"}
+    ],
+    "requirements": ["Notion account", "Integration details", "Redirect URI", "Workspace owner authorization"],
+    "blockers": ["Integration only sees pages shared with it", "Workspace policy may limit integrations", "Public distribution setup may need additional review"],
+    "agent_can_do": ["Explain integration capabilities", "Draft OAuth callback checklist", "Help test API access"],
+    "human_must_do": ["Create integration in developer portal", "Authorize workspace access", "Complete any required distribution or review steps"],
+    "sources": [{"label": "Notion authorization", "url": "https://developers.notion.com/docs/authorization"}, {"label": "Notion integration capabilities", "url": "https://developers.notion.com/docs/authorization#integration-capabilities"}],
+    "verification": "Guide checked against official Notion developer documentation. No integration creation or workspace authorization was performed."
+  }
+]

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ConnectPath AI — OAuth setup, made clear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav class="nav"><a class="brand" href="/"><span class="brand-mark">↗</span> connectpath<span class="brand-ai">AI</span></a><div class="nav-right"><span class="nav-pill"><i></i> OAuth readiness workspace</span><a href="#directory">Explore guides</a></div></nav>
+  <main>
+    <section class="hero">
+      <div class="eyebrow"><span class="spark">✦</span> FOR DEVELOPERS BUILDING WITH AI</div>
+      <h1>Go from app idea<br>to <span>OAuth-ready.</span></h1>
+      <p class="hero-copy">Understand every step, estimate the effort, and know exactly where an agent can help — before OAuth setup slows you down.</p>
+      <div class="search-card">
+        <div class="search-heading"><div><strong>Generate an OAuth setup guide</strong><small>Search our library or research a new app</small></div><span class="live-tag">✦ AI RESEARCH</span></div>
+        <form id="generate-form">
+          <label for="app-name">APP NAME</label>
+          <input id="app-name" placeholder="e.g. Linear, Asana, Salesforce" required>
+          <label for="docs-url">OFFICIAL OAUTH DOCUMENTATION URL</label>
+          <div class="url-row"><input id="docs-url" type="url" placeholder="https://developer.example.com/oauth" required><button id="generate-btn" type="submit">Generate guide <span>↗</span></button></div>
+          <p class="form-hint">For an unfamiliar app, provide its official OAuth documentation page. We'll inspect it and build a shareable starter guide.</p>
+        </form>
+        <div id="status" class="status" hidden></div>
+      </div>
+      <div class="hero-proof"><span>✓</span> Evidence-led guidance <span>✓</span> Human vs. agent steps <span>✓</span> Shareable guides</div>
+    </section>
+    <section class="section" id="directory">
+      <div class="section-top"><div><div class="eyebrow">START WITH A KNOWN INTEGRATION</div><h2>OAuth guide library</h2><p>Practical starting points for popular developer tools.</p></div><div class="count">04 <span>GUIDES</span></div></div>
+      <div class="filters"><div class="filter-search">⌕ <input id="filter" placeholder="Filter integrations..."></div><span>Curated examples · Official sources linked</span></div>
+      <div class="app-grid" id="app-grid">
+      {% for item in apps %}
+        <article class="app-card" data-name="{{ item.name|lower }} {{ item.category|lower }}">
+          <div class="app-card-top"><div class="app-icon icon-{{ item.slug }}">{{ item.name[0] }}</div><span class="difficulty">{{ item.difficulty }}</span></div>
+          <div class="app-name">{{ item.name }}</div><div class="app-category">{{ item.category }}</div>
+          <p>{{ item.description }}</p>
+          <div class="card-meta"><span>◷ {{ item.time }}</span><span>↗ OAuth guide</span></div>
+          <button class="text-button" data-slug="{{ item.slug }}">Explore setup guide <b>→</b></button>
+        </article>
+      {% endfor %}
+      </div>
+      <div class="footnote">*Time ranges are prototype estimates for a straightforward development setup, not provider SLAs. Reviews, account verification, scopes and organization policies can extend timelines.</div>
+    </section>
+    <section class="bottom-cta"><div><div class="eyebrow">NOT SEEING YOUR APP?</div><h2>Bring any OAuth provider.</h2><p>Paste its official docs above. ConnectPath will inspect the page and turn it into a practical setup checklist.</p></div><a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">Generate a new guide ↗</a></section>
+  </main>
+  <footer><a class="brand" href="/"><span class="brand-mark">↗</span> connectpath<span class="brand-ai">AI</span></a><span>Built as a focused OAuth readiness prototype · Sources linked in every guide</span></footer>
+  <div class="modal-backdrop" id="modal" hidden><div class="modal"><button class="close" id="close-modal">×</button><div id="modal-content"></div></div></div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body></html>
