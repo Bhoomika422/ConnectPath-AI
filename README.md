@@ -1,93 +1,212 @@
 # ConnectPath AI — OAuth Setup Guide Builder
 
-A focused product prototype for developers and agent builders who need to understand the work involved in creating and approving provider OAuth apps.
+A focused product prototype that helps developers and AI agent builders understand the steps, requirements, timelines, and human approvals involved in setting up OAuth integrations with different providers.
 
-## What it does
+## Live Demo
 
-- Shows a small curated OAuth guide library (Google, Slack, GitHub and Notion).
-- Displays setup steps, difficulty, estimated setup time, possible approval delays, requirements and blockers.
-- Separates work an agent can assist with from actions that require a human.
-- Lets a user enter an unfamiliar app and an official documentation URL.
-- Fetches the public documentation page and creates a shareable guide stored in SQLite.
-- Optionally uses Gemini to synthesize the fetched source into a structured guide.
+https://connectpath-ai.onrender.com
 
-## Run locally
+## GitHub Repository
 
-Requires Python 3.10+.
+https://github.com/Bhoomika422/ConnectPath-AI
+
+## What It Does
+
+ConnectPath AI helps users explore OAuth setup requirements through structured, easy-to-follow guides.
+
+Key features:
+
+- Provides a curated OAuth guide library for Google, Slack, GitHub, and Notion.
+- Displays setup steps, difficulty levels, estimated setup time, possible approval delays, requirements, and common blockers.
+- Separates tasks an AI agent can assist with from actions that require human involvement.
+- Allows users to enter an unfamiliar application and provide its official OAuth documentation URL.
+- Fetches publicly accessible documentation pages and generates shareable setup guides.
+- Stores generated guides in SQLite.
+- Optionally uses Gemini to synthesize fetched documentation into a structured guide.
+- Clearly identifies unverified information instead of presenting assumptions as confirmed facts.
+
+## Tech Stack
+
+- **Backend:** Python, Flask
+- **Frontend:** HTML, CSS, JavaScript
+- **Database:** SQLite
+- **AI Integration:** Google Gemini API (optional)
+- **Documentation Fetching:** Requests, BeautifulSoup
+- **Deployment:** Render
+- **Server:** Gunicorn
+
+## Run Locally
+
+### Prerequisites
+
+- Python 3.10 or above
+- Git
+- A Gemini API key (optional)
+
+### 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
-cd connectpath-ai
+git clone https://github.com/Bhoomika422/ConnectPath-AI.git
+cd ConnectPath-AI
+```
+
+### 2. Create a Virtual Environment
+
+```bash
 python -m venv venv
+```
 
-# Windows PowerShell
+Activate it:
+
+**Windows PowerShell**
+```bash
 venv\Scripts\Activate.ps1
+```
 
-# macOS/Linux
+**macOS/Linux**
+```bash
 source venv/bin/activate
+```
 
+### 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env` and optionally add a Gemini API key.
+### 4. Configure Environment Variables
 
+Copy `.env.example` to `.env`.
+
+**Windows**
 ```bash
-# Windows
 copy .env.example .env
+```
 
-# macOS/Linux
+**macOS/Linux**
+```bash
 cp .env.example .env
 ```
 
-Start the app:
+Add your configuration to `.env`:
+
+```env
+SECRET_KEY=your-secret-key
+FLASK_DEBUG=false
+GEMINI_API_KEY=your-gemini-api-key
+```
+
+The Gemini API key is optional. Never commit your actual `.env` file or API credentials to GitHub.
+
+### 5. Start the Application
 
 ```bash
 python app.py
 ```
 
-Open http://127.0.0.1:5000
+Open the application at:
 
-## AI research mode
+http://127.0.0.1:5000
 
-Set `GEMINI_API_KEY` in `.env` to enable Gemini synthesis. Without a key, the app still fetches the submitted page and creates a transparent starter checklist. It labels unknown details as unverified rather than inventing provider-specific facts.
+## AI Research Mode
 
-Never commit `.env` or provider credentials. The included `.gitignore` excludes it.
+ConnectPath AI optionally uses the Gemini API to synthesize publicly fetched OAuth documentation into structured setup guidance.
 
-## Product decisions
+When a Gemini API key is configured and the service is available, the application can use it to generate a structured guide.
 
-1. **Focused library over 100 shallow entries:** four varied providers demonstrate distinct setup patterns while keeping the prototype verifiable.
-2. **Evidence before confidence:** every curated guide links official provider documentation. Generated guides show the source page and state whether a console setup or approval was actually attempted.
-3. **Human/agent boundary:** agents can research docs, draft checklists and validate configuration; humans must sign in, accept terms, own accounts and complete provider-specific reviews.
-4. **Time estimates are ranges:** they are indicative prototype estimates for a straightforward development setup, not provider SLAs. Approval and verification can extend timelines.
-5. **Shareable output:** generated guides receive a persistent local SQLite ID and a public route.
+If Gemini is unavailable or a request fails, the application can use its available fallback guidance. Fallback content should be treated as a starter reference, not as independently verified AI-generated research.
 
-## Verification performed
+Users should always review the linked official documentation before acting on provider-specific requirements.
 
-- Curated guide content is linked to official documentation:
-  - Google: https://developers.google.com/identity/protocols/oauth2
-  - Slack: https://api.slack.com/authentication/oauth-v2
-  - GitHub: https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app
-  - Notion: https://developers.notion.com/docs/authorization
-- The prototype does not sign in to provider consoles, create OAuth apps, request credentials, submit app reviews or complete provider approval.
-- Dynamic guide generation verifies that the documentation page can be fetched. It does not independently prove that every generated statement is correct; review the linked sources before acting.
+## Product Decisions
 
-## Limitations / next steps
+### 1. Focused Library Over 100 Shallow Entries
 
-- The library contains four examples, not 100 apps.
-- Dynamic research currently fetches one URL supplied by the user; it does not crawl an entire provider docs site or perform authenticated browser actions.
-- Approval timelines and exact scope requirements are provider-, account- and use-case-specific. Unknowns are explicitly marked.
-- SQLite is suitable for a local demo, not multi-instance production hosting. Use managed persistent storage for deployment.
-- Add rate limiting, stronger SSRF protection, source snapshots, background jobs, tests and production secret management before public launch.
-- For production, use a dedicated research/search API and cite each factual claim to the precise source section.
+The prototype starts with four varied providers—Google, Slack, GitHub, and Notion—to demonstrate different OAuth setup patterns while keeping the initial library manageable and reviewable.
 
-## Suggested demo script
+The structure can be extended to support a larger library of applications.
 
-1. Open the app directory and inspect the Google guide.
-2. Compare Slack and GitHub setup differences.
-3. Enter an unfamiliar provider name and its official OAuth documentation URL.
-4. Generate the guide, inspect source/verification notes and open the shareable URL.
-5. Explain which steps an agent can prepare and which require a human.
+### 2. Evidence Before Confidence
 
-## Repository and deployment
+Curated guides link to official provider documentation. Generated guides retain the documentation URL used as their source and distinguish known information from details that still need verification.
 
-Push this folder to GitHub. Deploy the Flask app to a Python-capable host. Configure `SECRET_KEY` and (optionally) `GEMINI_API_KEY` as environment variables. Use persistent storage for `data/guides.db`; ephemeral filesystems can erase generated share links after redeployment.
+### 3. Human and Agent Responsibilities
+
+AI agents can assist with researching documentation, drafting setup checklists, organizing requirements, and validating configuration.
+
+Human involvement remains necessary for signing in, accepting terms, owning provider accounts, creating credentials, and completing provider-specific approval processes.
+
+### 4. Transparent Time Estimates
+
+Setup time estimates are indicative ranges for straightforward development scenarios. Actual timelines may vary depending on the provider, account type, requested permissions, and approval requirements.
+
+### 5. Shareable Guides
+
+Generated guides receive an identifier and can be accessed through a shareable application route.
+
+## Official Documentation References
+
+The curated guide library uses the following official documentation sources:
+
+- **Google OAuth:** https://developers.google.com/identity/protocols/oauth2
+- **Slack OAuth:** https://api.slack.com/authentication/oauth-v2
+- **GitHub OAuth Apps:** https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app
+- **Notion Authorization:** https://developers.notion.com/docs/authorization
+
+## Verification Performed
+
+- Reviewed the official documentation links used by the curated guides.
+- Tested the Flask application locally.
+- Tested the deployed application on Render.
+- Tested the guide generation flow using a publicly accessible documentation URL.
+- Checked the generated guide and its shareable route.
+- Confirmed that the prototype distinguishes source-based fallback guidance from AI-generated output when Gemini is unavailable.
+
+The prototype does not sign in to provider consoles, create OAuth applications, request credentials, submit app reviews, or complete provider approval.
+
+Fetching a documentation page does not independently verify every statement in a generated guide. Users should review the linked source before implementation.
+
+## Limitations and Future Improvements
+
+- The current curated library contains four providers, not 100 applications.
+- Dynamic research currently fetches one documentation URL supplied by the user.
+- It does not crawl an entire provider documentation website or perform authenticated browser actions.
+- Gemini availability and response times depend on the external API.
+- Approval timelines and exact permission requirements vary by provider, account, and use case.
+- SQLite is suitable for this prototype but not ideal for multi-instance production hosting.
+- Production improvements could include persistent managed storage, rate limiting, stronger SSRF protection, automated tests, background jobs, source snapshots, and more detailed source citations.
+- A larger application library and dedicated research/search integration could improve coverage and source verification.
+
+## Suggested Demo Walkthrough
+
+1. Open the application and explore the curated OAuth guide library.
+2. Inspect the Google OAuth guide.
+3. Compare the Slack and GitHub setup requirements.
+4. Enter an unfamiliar application name and its official OAuth documentation URL.
+5. Generate a guide and inspect its setup steps, requirements, and verification notes.
+6. Open the generated shareable guide.
+7. Explain which tasks an AI agent can prepare and which actions require human approval.
+
+## Deployment
+
+The application is deployed on Render.
+
+Live application: https://connectpath-ai.onrender.com
+
+For deployment:
+
+- Use a Python-compatible hosting platform.
+- Install dependencies using `pip install -r requirements.txt`.
+- Configure `SECRET_KEY` as an environment variable.
+- Configure `GEMINI_API_KEY` if Gemini functionality is required.
+- Use Gunicorn to serve the Flask application.
+- Configure persistent storage for `data/guides.db` if generated guides need to survive redeployments.
+
+## Project Links
+
+- **Live Demo:** https://connectpath-ai.onrender.com
+- **GitHub Repository:** https://github.com/Bhoomika422/ConnectPath-AI
+
+---
+
+**ConnectPath AI** — Making OAuth setup more understandable, structured, and transparent for developers and AI agents.
